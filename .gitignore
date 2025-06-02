@@ -1,1 +1,10 @@
 /CustomUsers/migrations/
+/db.sqlite3
+/manage.py
+/frontend_v1.3/.svelte-kit/
+/frontend_v1.3/node_modules/
+/staticfiles_collected/admin/
+
+/staticfiles_collected/admin/css/
+/staticfiles_collected/admin/img/
+/staticfiles_collected/admin/js/

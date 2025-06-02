@@ -79,15 +79,19 @@ class EchoConsumerJSON(AsyncJsonWebsocketConsumer):
 
 class GetUserInfo(AsyncJsonWebsocketConsumer):
     async def websocket_connect(self, event):
-        print(f'Запрос данных пользователя , event={event}, юзер = {self.scope["user"]}')
-        await self.accept()
-        await asyncio.sleep(1.0)
-        await self.send_json({
-            "type": "websocket.send",
-            "message":{"id":self.scope["user"].id,"first_name":self.scope["user"].first_name,"last_name":self.scope["user"].last_name,"email":self.scope["user"].email}
-        })
-        await asyncio.sleep(1.0)
-        await self.close(code=1000)
+        if self.scope["user"].is_authenticated:
+            print(f'Запрос данных пользователя , event={event}, юзер = {self.scope["user"]}')
+            await self.accept()
+            await asyncio.sleep(1.0)
+            await self.send_json({
+                "type": "websocket.send",
+                "message":{"id":self.scope["user"].id,"first_name":self.scope["user"].first_name,"last_name":self.scope["user"].last_name,"email":self.scope["user"].email}
+            })
+            await asyncio.sleep(1.0)
+            await self.close(code=1000)
+        else:
+            await self.close(code=500)
 
-    async def websocket_disconnect(self, close_code):
+
+    async def disconnect(self, close_code):
         print(f'Соединение закрылось, код {close_code} user={self.scope["user"]}')

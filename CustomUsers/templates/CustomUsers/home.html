@@ -1,0 +1,42 @@
+{% comment %} /Volumes/NVME2TB/PycharmProjects/ChannelsWS/CustomUsers/templates/CustomUsers/home.html {% endcomment %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+     <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .messages { list-style: none; padding: 0; margin-bottom: 20px; }
+        .messages li { padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .messages li.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .messages li.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        form button { padding: 8px 15px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        form button:hover { background-color: #c82333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Главная страница</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <p>Привет, {{ user.username }}!</p>
+            <p>Здесь может быть ваш WebSocket клиент или другая информация.</p>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Выйти</button>
+            </form>
+        {% else %}
+            <p>Пожалуйста, <a href="{% url 'login' %}">войдите</a>, чтобы продолжить.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
